@@ -46,6 +46,11 @@ function module.logChat(callback)
     end
 end
 
+function module.calcReplicationDelay(walkspeed, movementComponet)
+    local math = -1 * ((walkspeed/16)*2)
+    return math
+end
+
 function module.createWebhook(url)
     return url
 end

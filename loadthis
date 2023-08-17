@@ -1,4 +1,7 @@
 local module = {}
+local httpService = game:GetService("HttpService")
+local index = 0
+
 function module.findUser(user)
     local localName = string.lower(user)
     for v, i in pairs(game.Players:GetPlayers()) do
@@ -25,7 +28,7 @@ function module.logChat(callback)
         game:GetService("TextChatService").MessageReceived:Connect(function(message)
             if message.TextSource and message.Text then
                 local player = game.Players:GetPlayerByUserId(message.TextSource.UserId)
-                callback(player, message)
+                callback(player, message.Text)
             end
         end)
     else
@@ -42,5 +45,34 @@ function module.logChat(callback)
         end)
     end
 end
+
+function module.createWebhook(url)
+    return url
+end
+function module.sendWebhook(webhook, title, msg)
+
+    local webhook_url = webhook
+    local response = request(
+        {
+            Url = webhook_url,
+            Method = "POST",
+            Headers = {
+                ['Content-Type'] = 'application/json',
+    
+            }, 
+    
+            Body = httpService:JSONEncode({
+                ["content"] = "",
+                ["embeds"] = {{
+                    ["title"] = title,
+                    ["description"] = msg,
+                    ["type"] = "rich"
+                }}
+            })
+        }
+    )
+    return response
+end
+
 
 return module

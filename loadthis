@@ -1,0 +1,46 @@
+local module = {}
+function module.findUser(user)
+    local localName = string.lower(user)
+    for v, i in pairs(game.Players:GetPlayers()) do
+        local name = string.lower(i.Name)
+        if string.find(name,user) then
+            return i
+        elseif string.find(string.lower(i.DisplayName), user) then
+            return i
+        end
+    end
+end
+function module.say(msg)
+    if game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents") then
+        -- orginal text chat shit
+        game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents").SayMessageRequest:FireServer(msg,"All")
+    else
+        -- text chat service
+        game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(msg)
+    end
+end
+
+function module.logChat(callback)
+    if game.ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents") then
+        game:GetService("TextChatService").MessageReceived:Connect(function(message)
+            if message.TextSource and message.Text then
+                local player = game.Players:GetPlayerByUserId(message.TextSource.UserId)
+                callback(player, message)
+            end
+        end)
+    else
+        local chatEvents = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents")
+        local messageDoneFiltering = chatEvents:WaitForChild("OnMessageDoneFiltering")
+
+        messageDoneFiltering.OnClientEvent:Connect(function(message)
+            local player = game.Players:FindFirstChild(message.FromSpeaker)
+            local message = message.Message or ""
+
+            if player then
+                callback(player. message)
+            end
+        end)
+    end
+end
+
+return module

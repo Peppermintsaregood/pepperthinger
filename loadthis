@@ -40,7 +40,7 @@ function module.logChat(callback)
             local message = message.Message or ""
 
             if player then
-                callback(player. message)
+                callback(player, message)
             end
         end)
     end

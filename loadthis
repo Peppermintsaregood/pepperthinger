@@ -47,7 +47,7 @@ function module.logChat(callback)
 end
 
 function module.calcReplicationDelay(walkspeed, movementComponet)
-    local math = -1 * ((walkspeed/16)*2)
+    local math = (-1 * ((walkspeed/16)*2)) * movementComponet
     return math
 end
 

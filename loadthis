@@ -17,7 +17,7 @@ function module.encrypt(text, shiftAmount)
     local encrypted = ""
 	    
 	for i = 1, text:len() do
-		local internalNC = textToEncrypt:sub(i, i):byte()
+		local internalNC = text:sub(i, i):byte()
 		encrypted = encrypted .. string.char(internalNC - shiftAmount)
 	end
 	
@@ -27,7 +27,7 @@ function module.decrypt(text, shiftAmount)
 	local decrypted = ""
 	
 	for i = 1, text:len() do
-		local internalNC = textToDecrypt:sub(i, i):byte()
+		local internalNC = text:sub(i, i):byte()
 		decrypted = decrypted .. string.char(internalNC + shiftAmount)
 	end
 	

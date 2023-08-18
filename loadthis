@@ -13,6 +13,27 @@ function module.findUser(user)
         end
     end
 end
+local function module.encrypt(textToEncrypt, shiftAmount)
+    local encrypted = ""
+	    
+	for i = 1, text:len() do
+		local internalNC = textToEncrypt:sub(i, i):byte()
+		encrypted = encrypted .. string.char(internalNC - shiftAmount)
+	end
+	
+	return encrypted
+end
+local function module.decrypt(textToDecrypt, shiftAmount)
+	local decrypted = ""
+	
+	for i = 1, text:len() do
+		local internalNC = textToDecrypt:sub(i, i):byte()
+		decrypted = decrypted .. string.char(internalNC + shiftAmount)
+	end
+	
+	return decrypted
+end
+
 function module.say(msg)
     if game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents") then
         -- orginal text chat shit
